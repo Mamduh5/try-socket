@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My WebSocket Game/Chat</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        #messages { list-style-type: none; margin: 0; padding: 0; }
+        #messages li { padding: 8px 10px; border-bottom: 1px solid #eee; }
+        #form { background: #f0f0f0; padding: 10px; display: flex; }
+        #input { flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px; }
+        #form button { padding: 8px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Simple WebSocket Chat</h1>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Connect to the Socket.IO server
+        const socket = io(window.location.origin);
+
+        const form = document.getElementById('form');
+        const input = document.getElementById('input');
+        const messages = document.getElementById('messages');
+
+        // When the form is submitted (user clicks send or presses enter)
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent page reload
+            if (input.value) {
+                // Emit a 'chat message' event to the server
+                socket.emit('chat message', input.value);
+                input.value = ''; // Clear the input field
+            }
+        });
+
+        // Listen for 'chat message' events from the server
+        socket.on('chat message', (msg) => {
+            const item = document.createElement('li');
+            item.textContent = msg;
+            messages.appendChild(item);
+            // Scroll to the bottom of the messages list
+            messages.scrollTop = messages.scrollHeight;
+        });
+
+        // You'd add game-specific event listeners here later
+        // socket.on('game_state_update', (data) => { /* update game UI */ });
+        // socket.on('player_moved', (data) => { /* show player movement */ });
+
+    </script>
+</body>
+</html>
