@@ -1,2 +1,1 @@
-# try-socket
-Lerning Socket io
+# Lerning Socket io
