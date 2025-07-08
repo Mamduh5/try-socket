@@ -11,7 +11,7 @@ node index.js
 
 ## Run ngrock
 >Go to installed ngrock folder.
-
+>ngrok http [your-port]
 ```sh
-ngrok http [your-port]
+ngrok http 3000
 ```
